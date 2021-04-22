@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const apiRouter = require('./api/api');
 
 // dotenv config
 dotenv.config({ path: './config/.env' });
@@ -18,6 +19,9 @@ if (process.env.NODE_ENV === 'development') {
 app.get('/', async (req, res) => {
     res.status(200).send('Server working');
 });
+
+// API Router
+app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
     console.log(

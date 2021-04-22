@@ -17,3 +17,29 @@ describe('GET /', function () {
         assert.equal(response.type, 'text/html');
     });
 });
+
+describe('/api/signup', async function () {
+    describe('POST /api/signup', async function () {
+        it('Creates a new user', async function () {
+            const data = {
+                data: {
+                    login: {
+                        email: 'sample1@gmaill.com',
+                        password: '134234234',
+                    },
+                    userInfo: {
+                        userName: 'John Doe',
+                    },
+                },
+            };
+
+            const response = await request(app)
+                .post('/api/signup')
+                .set('Content-type', 'application/json')
+                .send(data);
+
+            assert.isObject(response.body);
+            assert.equal(response.status, 200);
+        });
+    });
+});
