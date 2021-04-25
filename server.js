@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const connectFirebase = require('./config/auth');
 const admin = require('firebase-admin');
 const firebase = require('firebase/app');
+const testRouter = require('./routes/test.routes');
 require('firebase/auth');
 
 // dotenv config
@@ -52,6 +53,11 @@ app.get('/', async (req, res) => {
 
 // API Router
 app.use('/api', apiRouter);
+
+// Test Router
+if (process.env.NODE_ENV === 'test') {
+    app.use('/test', testRouter);
+}
 
 app.listen(PORT, () => {
     console.log(

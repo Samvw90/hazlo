@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const userSchema = new Schema({
+    _id: {
+        type: String,
+        required: true,
+    },
     name: {
         type: String,
         required: true,
@@ -11,7 +15,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    creationDate: { type: Date.now },
+    creationDate: { type: Date, default: Date.now },
     tasks: {
         type: Array,
         default: undefined,

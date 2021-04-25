@@ -18,28 +18,38 @@ describe('GET /', function () {
     });
 });
 
-describe('/api/signup', async function () {
-    describe('POST /api/signup', async function () {
-        it('Creates a new user', async function () {
-            const data = {
-                data: {
-                    login: {
+describe('Auth API Test', () => {
+    describe('/api/signup', async function () {
+        describe('POST /api/signup', async function () {
+            it('Creates a new user', async function () {
+                const data = {
+                    signup: {
                         email: 'sample1@gmaill.com',
                         password: '134234234',
+                        userName: 'Sample 1',
                     },
-                    userInfo: {
-                        userName: 'John Doe',
-                    },
-                },
-            };
+                };
 
-            const response = await request(app)
-                .post('/api/signup')
-                .set('Content-type', 'application/json')
-                .send(data);
+                const response = await request(app)
+                    .post('/api/user/signup')
+                    .set('Content-type', 'application/json')
+                    .send(data);
 
-            assert.isObject(response.body);
-            assert.equal(response.status, 200);
+                // console.log(JSON.parse(response.text).data.name);
+
+                assert.isObject(response.body);
+                assert.equal(response.status, 201);
+                assert.equal(JSON.parse(response.text).data.name, 'Sample 1');
+            });
         });
+    });
+
+    after(async function () {
+        const response = await request(app)
+            .del('/test/all-users/delete')
+            .send();
+
+        // console.log(response.text);
+        console.log('    Firebase Auth + MondoDB ready');
     });
 });
