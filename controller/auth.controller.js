@@ -13,6 +13,7 @@ exports.authUser = async (req, res, next) => {
                 .createUserWithEmailAndPassword(email, password);
             // console.log(response.user.uid);
             req.uid = response.user.uid;
+            req.token = response.user.refreshToken;
 
             next();
         }

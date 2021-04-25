@@ -18,7 +18,7 @@ describe('GET /', function () {
     });
 });
 
-describe('Auth API Test', () => {
+describe('Auth API Test', function () {
     describe('/api/signup', async function () {
         describe('POST /api/signup', async function () {
             it('Creates a new user', async function () {
@@ -35,7 +35,7 @@ describe('Auth API Test', () => {
                     .set('Content-type', 'application/json')
                     .send(data);
 
-                // console.log(JSON.parse(response.text).data.name);
+                // console.log(JSON.parse(response.text).token);
 
                 assert.isObject(response.body);
                 assert.equal(response.status, 201);
@@ -43,6 +43,8 @@ describe('Auth API Test', () => {
             });
         });
     });
+
+    // describe('/api/user/logout', async function() {})
 
     after(async function () {
         const response = await request(app)

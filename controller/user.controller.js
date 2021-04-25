@@ -15,6 +15,7 @@ exports.createUser = async (req, res, next) => {
         return res.status(201).json({
             success: true,
             data: response,
+            token: req.token,
         });
     } catch (err) {
         console.log(err);
