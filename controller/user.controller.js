@@ -29,11 +29,11 @@ exports.getUser = async (req, res, next) => {
             _id: req.uid,
         };
 
-        const response = await User.find(data);
+        const response = await User.findOne(data);
 
         return res.status(200).json({
             success: true,
-            data: response[0],
+            data: response,
             token: req.token,
         });
     } catch (err) {

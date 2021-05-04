@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { Schema, model } = mongoose;
 
+const taskSchema = require('./taskSchema');
+
 const userSchema = new Schema({
     _id: {
         type: String,
@@ -17,8 +19,7 @@ const userSchema = new Schema({
     },
     creationDate: { type: Date, default: Date.now },
     tasks: {
-        type: Array,
-        default: undefined,
+        type: [taskSchema],
     },
 });
 
