@@ -1,5 +1,4 @@
-const firebase = require('firebase/app');
-require('firebase/auth');
+const admin = require('firebase-admin');
 
 exports.authUser = async (req, res, next) => {
     try {
@@ -17,6 +16,20 @@ exports.authUser = async (req, res, next) => {
 
             next();
         }
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        next(err);
+    }
+};
+
+exports.verifyToken = async (req, res, next) => {
+    try {
+        const { token } = req.body;
+
+        const response = await admin.auth().verifyIdToken(token);
+        req.uid = response.uid;
+        next();
+        // res.status(201).json(response);
     } catch (err) {
         console.log(`Error: ${err}`);
         next(err);

@@ -1,5 +1,31 @@
 const admin = require('firebase-admin');
 const User = require('../models/userSchema');
+const firebase = require('firebase/app');
+require('firebase/auth');
+
+exports.signInUser = async (req, res, next) => {
+    try {
+        const { email, password, userName } = req.body.signup;
+
+        if (!email | !password | !userName) {
+            return res.status(400).json({ error: 'Missing fields' });
+        } else {
+            const response = await firebase
+                .auth()
+                .createUserWithEmailAndPassword(email, password);
+            // console.log(response.user.uid);
+            // const token = await firebase.auth().currentUser.getIdToken(true);
+            req.uid = response.user.uid;
+            const token = await response.user.getIdToken(true);
+
+            // next();
+            res.status(200).json({ token: token });
+        }
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        next(err);
+    }
+};
 
 exports.getAllUsers = async (req, res, next) => {
     try {

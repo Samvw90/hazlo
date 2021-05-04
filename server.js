@@ -4,10 +4,10 @@ const morgan = require('morgan');
 const apiRouter = require('./api/api');
 const connectDB = require('./config/db');
 const connectFirebase = require('./config/auth');
-const admin = require('firebase-admin');
+// const admin = require('firebase-admin');
 const firebase = require('firebase/app');
-const testRouter = require('./routes/test.routes');
 require('firebase/auth');
+const testRouter = require('./routes/test.routes');
 
 // dotenv config
 dotenv.config({ path: './config/.env' });
@@ -33,9 +33,9 @@ connectFirebase();
 // firebase
 //     .auth()
 //     .createUserWithEmailAndPassword(email, password)
-//     .then((userCredential) => {
+//     .then(async (userCredential) => {
 //         // Signed in
-//         var user = userCredential.user;
+//         var user = await userCredential.user.getIdTokenResult();
 //         console.log(user);
 //         // ...
 //     })
