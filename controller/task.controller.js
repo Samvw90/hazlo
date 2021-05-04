@@ -4,6 +4,8 @@ exports.createTask = async (req, res, next) => {
     try {
         const { taskTitle, dueDate } = req.body.task;
 
+        // console.log(req.headers.authorization.split(' ')[1]);
+
         const data = {
             taskTitle: taskTitle,
             dueDate: dueDate,
@@ -17,6 +19,17 @@ exports.createTask = async (req, res, next) => {
         // console.log(save);
 
         res.status(201).json({ save });
+    } catch (err) {
+        console.log(`Error: ${err}`);
+        next(err);
+    }
+};
+
+exports.getUserTasks = async (req, res, next) => {
+    try {
+        const userDocument = await User.findById(req.uid);
+        // console.log(userDocument.tasks);
+        res.status(200).json({ tasks: userDocument.tasks });
     } catch (err) {
         console.log(`Error: ${err}`);
         next(err);

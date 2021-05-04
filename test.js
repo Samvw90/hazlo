@@ -46,11 +46,11 @@ describe('Auth API Test', function () {
                         email: 'sample1@gmaill.com',
                         userName: 'Sample 1',
                     },
-                    token: token,
                 };
                 const response = await request(app)
                     .post('/api/user/signup')
                     .set('Content-type', 'application/json')
+                    .set('Authorization', `Bearer ${token}`)
                     .send(data);
                 // console.log(response.body);
                 assert.ok(response.body);
@@ -68,13 +68,9 @@ describe('Auth API Test', function () {
 
             const token = await response.user.getIdToken(true);
             if (token) {
-                const data = {
-                    token: token,
-                };
                 const response = await request(app)
-                    .post('/api/user/login')
-                    .set('Content-type', 'application/json')
-                    .send(data);
+                    .get('/api/user/login')
+                    .set('Authorization', `Bearer ${token}`);
                 // console.log(response.body.data.tasks);
                 assert.ok(response.body);
             }
@@ -91,18 +87,57 @@ describe('Tasks API test', function () {
             .signInWithEmailAndPassword(email, password);
 
         this.token = await response.user.getIdToken(true);
-        // console.log(this.token);
+        console.log('    Token Ready...');
     });
-    it('POST /api/tasks/new-task', async function () {
-        const data = {
-            token: this.token,
-            task: { taskTitle: 'sample task 1', dueDate: '2021-06-10' },
-        };
-        const response = await request(app)
-            .post('/api/tasks/new-task')
-            .set('Content-type', 'application/json')
-            .send(data);
-        // console.log(response.body);
-        assert.ok(response.body);
+    describe('POST /api/tasks/new-task', function () {
+        it('creates a new task Sample 1', async function () {
+            const data = {
+                token: this.token,
+                task: { taskTitle: 'sample task 1', dueDate: '2021-06-10' },
+            };
+            const response = await request(app)
+                .post('/api/tasks/new-task')
+                .set('Content-type', 'application/json')
+                .set('Authorization', `Bearer ${this.token}`)
+                .send(data);
+            // console.log(response.body);
+            assert.ok(response.body);
+        });
+        it('creates a new task Sample 2', async function () {
+            const data = {
+                token: this.token,
+                task: { taskTitle: 'sample task 2', dueDate: '2021-07-10' },
+            };
+            const response = await request(app)
+                .post('/api/tasks/new-task')
+                .set('Content-type', 'application/json')
+                .set('Authorization', `Bearer ${this.token}`)
+                .send(data);
+            // console.log(response.body);
+            assert.ok(response.body);
+        });
+        it('creates a new task Sample 3', async function () {
+            const data = {
+                token: this.token,
+                task: { taskTitle: 'sample task 3', dueDate: '2021-07-17' },
+            };
+            const response = await request(app)
+                .post('/api/tasks/new-task')
+                .set('Content-type', 'application/json')
+                .set('Authorization', `Bearer ${this.token}`)
+                .send(data);
+            // console.log(response.body);
+            assert.ok(response.body);
+        });
+    });
+    describe('GET /api/tasks', function () {
+        it('retrieves all tasks for the current user', async function () {
+            const response = await request(app)
+                .get('/api/tasks')
+                .set('Authorization', `Bearer ${this.token}`);
+            assert.equal(response.status, 200);
+            assert.isArray(response.body.tasks);
+            // console.log(response.body);
+        });
     });
 });
