@@ -44,7 +44,7 @@ describe('Auth API Test', function () {
                 const data = {
                     signup: {
                         email: 'sample1@gmaill.com',
-                        userName: 'Sample 1',
+                        userName: 'User Sample 1',
                     },
                 };
                 const response = await request(app)
@@ -126,8 +126,9 @@ describe('Tasks API test', function () {
                 .set('Content-type', 'application/json')
                 .set('Authorization', `Bearer ${this.token}`)
                 .send(data);
-            // console.log(response.body);
+            // console.log(response);
             assert.ok(response.body);
+            assert.equal(response.status, 201);
         });
     });
     describe('GET /api/tasks', function () {
@@ -135,9 +136,31 @@ describe('Tasks API test', function () {
             const response = await request(app)
                 .get('/api/tasks')
                 .set('Authorization', `Bearer ${this.token}`);
+            // console.log(response.body.tasks[0]._id);
             assert.equal(response.status, 200);
             assert.isArray(response.body.tasks);
             // console.log(response.body);
+        });
+    });
+    describe('DELETE /api/task', function () {
+        before(async function () {
+            const response = await request(app)
+                .get('/api/tasks')
+                .set('Authorization', `Bearer ${this.token}`);
+            // console.log(response.body.tasks[0]._id);
+            this.taskId = response.body.tasks[0]._id;
+        });
+        it('deletes a single task', async function () {
+            const data = { taskId: this.taskId };
+
+            const response = await request(app)
+                .del('/api/tasks')
+                .set('Authorization', `Bearer ${this.token}`)
+                .send(data);
+
+            // console.log(response.body);
+            assert.equal(response.status, 200);
+            assert.isObject(response.body);
         });
     });
 });
