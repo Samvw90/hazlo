@@ -163,4 +163,31 @@ describe('Tasks API test', function () {
             assert.isObject(response.body);
         });
     });
+    describe('PUT /api/task', function () {
+        before(async function () {
+            const response = await request(app)
+                .get('/api/tasks')
+                .set('Authorization', `Bearer ${this.token}`);
+            // console.log(response.body.tasks[0]._id);
+            this.taskId = response.body.tasks[0]._id;
+        });
+        it('updates a single task', async function () {
+            const data = {
+                taskId: this.taskId,
+                task: {
+                    taskTitle: 'upated task 1',
+                    dueDate: '2022-02-03',
+                },
+            };
+
+            const response = await request(app)
+                .put('/api/tasks')
+                .set('Authorization', `Bearer ${this.token}`)
+                .send(data);
+
+            // console.log(response.body);
+            assert.equal(response.status, 200);
+            assert.isObject(response.body);
+        });
+    });
 });
