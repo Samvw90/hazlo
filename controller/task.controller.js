@@ -20,7 +20,10 @@ exports.createTask = async (req, res, next) => {
 
         res.status(201).json({ save });
     } catch (err) {
-        console.log(`Error: ${err}`);
+        const messages = Object.values(err.errors).map((val) => val.message);
+        console.log(messages);
+        // console.log(err.errors);
+        // console.log(`Error: ${err}`);
         next(err);
     }
 };
