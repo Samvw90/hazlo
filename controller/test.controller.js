@@ -1,5 +1,5 @@
-const admin = require('firebase-admin');
 const User = require('../models/userSchema');
+const admin = require('firebase-admin');
 const firebase = require('firebase/app');
 require('firebase/auth');
 

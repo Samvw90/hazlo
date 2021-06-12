@@ -7,6 +7,6 @@ const { createUser, getUser } = require('../controller/user.controller');
 
 userRouter.post('/signup', verifyToken, createUser);
 
-userRouter.post('/login', verifyToken, getUser);
+userRouter.get('/login', verifyToken, getUser);
 
 module.exports = userRouter;

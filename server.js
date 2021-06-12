@@ -5,8 +5,8 @@ const apiRouter = require('./api/api');
 const connectDB = require('./config/db');
 const connectFirebase = require('./config/auth');
 // const admin = require('firebase-admin');
-const firebase = require('firebase/app');
-require('firebase/auth');
+// const firebase = require('firebase/app');
+// require('firebase/auth');
 const testRouter = require('./routes/test.routes');
 
 // dotenv config
